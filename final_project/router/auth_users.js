@@ -73,6 +73,21 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         }
 });
 
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    // Extract email parameter from request URL
+    const isbn = req.params.isbn;
+    const username = req.session.authorization['username'];
+    let book = books[isbn];  // Retrieve friend object associated with email
+    if (book.reviews[username]) {  // Check if friend exists
+        delete book.reviews[username];
+        res.send(`Successflly deleted review for ${book.title}.`);
+    } else {
+        // Respond if friend with specified email is not found
+        res.send("Unable to delete review");
+    }
+});
+
+
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
