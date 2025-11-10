@@ -59,8 +59,18 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+        // Extract email parameter from request URL
+        const isbn = req.params.isbn;
+        const username = req.session.authorization['username'];
+        const review = req.body.review;
+        let book = books[isbn];  // Retrieve friend object associated with email
+        if (book) {  // Check if friend exists
+            book.reviews[username] = review;
+            res.send(`Successflly added review for ${book.title}.`);
+        } else {
+            // Respond if friend with specified email is not found
+            res.send("Unable to add review");
+        }
 });
 
 module.exports.authenticated = regd_users;

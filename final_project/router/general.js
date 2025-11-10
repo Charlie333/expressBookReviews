@@ -93,8 +93,14 @@ public_users.get('/title/:title',async (req, res) => {
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
-    const reviews = req.params.reviews;
-    res.send(books[reviews]);
+    const isbn = req.params.isbn;
+    const book = books[isbn];
+
+    if (book) {
+        res.send(book.reviews)
+    } else {
+        res.send(`Do not found book with ISBN ${isbn}.`)
+    }
 });
 
 module.exports.general = public_users;
