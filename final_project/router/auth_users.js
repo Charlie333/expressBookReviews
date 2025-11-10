@@ -63,26 +63,26 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         const isbn = req.params.isbn;
         const username = req.session.authorization['username'];
         const review = req.body.review;
-        let book = books[isbn];  // Retrieve friend object associated with email
-        if (book) {  // Check if friend exists
+        let book = books[isbn];  // Retrieve book object associated with user
+        if (book) {  // Check if book exists
             book.reviews[username] = review;
             res.send(`Successflly added review for ${book.title}.`);
         } else {
-            // Respond if friend with specified email is not found
+            // Respond if book with specified isbn is not found
             res.send("Unable to add review");
         }
 });
 
+//delete a book review
 regd_users.delete("/auth/review/:isbn", (req, res) => {
-    // Extract email parameter from request URL
     const isbn = req.params.isbn;
     const username = req.session.authorization['username'];
-    let book = books[isbn];  // Retrieve friend object associated with email
-    if (book.reviews[username]) {  // Check if friend exists
+    let book = books[isbn];  // Retrieve book object associated with user
+    if (book.reviews[username]) {  // Check if book exists
         delete book.reviews[username];
         res.send(`Successflly deleted review for ${book.title}.`);
     } else {
-        // Respond if friend with specified email is not found
+        // Respond if user with specified review is not found
         res.send("Unable to delete review");
     }
 });
